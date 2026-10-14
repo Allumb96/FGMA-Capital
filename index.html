@@ -241,33 +241,30 @@ body.home .nav:not(.open) .burger span { background: #f4ede4; }
 body.home .nav.solid { background: rgba(10, 6, 5, .82); box-shadow: 0 1px 0 var(--line); }
 body.home .nav.open { background: rgba(243, 243, 241, .98); }
 
-/* schede compatte + finestra dei dettagli */
-.op-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 18px; margin-bottom: 22px; }
-.op-grid .op, .op-mini { margin-bottom: 0; }
-button.op-mini { display: block; width: 100%; text-align: left; font: inherit; cursor: pointer; padding: 24px 26px 22px; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
-button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px); border-color: var(--brass); outline: none; box-shadow: 0 1px 2px rgba(0, 0, 0, .25), 0 22px 44px -18px rgba(0, 0, 0, .7); }
-.op-mini h2 { font-size: clamp(26px, 3vw, 32px); }
-.op-mini .meter-top { margin: 20px 0 8px; }
-.op-mini .meter { height: 14px; }
-.op-mini .meter-fill::after { top: 2px; height: 4px; }
+/* schede a fisarmonica: si aprono verso il basso, si richiudono con un secondo tocco */
+.op-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-bottom: 22px; align-items: start; }
+.op-grid .op { margin-bottom: 0; }
+.op.acc { padding: 0; transition: border-color .25s ease, box-shadow .25s ease; }
+.op.acc:hover, .op.acc.open { border-color: #5a4326; }
+.acc-head { display: block; width: 100%; background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; padding: 24px clamp(20px, 3vw, 32px) 22px; }
+.acc-head:focus-visible { outline: 2px solid var(--brass); outline-offset: -4px; border-radius: 6px; }
+.acc .op-head h2 { font-size: clamp(26px, 3vw, 34px); }
+.acc .meter-top { margin: 20px 0 8px; }
+.acc .meter { height: 14px; }
+.acc .meter-fill::after { top: 2px; height: 4px; }
 .mini-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-top: 16px; color: var(--muted); font-size: 14px; }
 .mini-foot b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
-.op-mini .apri { display: block; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); }
-.op-mini .apri i { font-style: normal; margin-left: 6px; }
-
-.modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
-.modal[hidden] { display: none; }
-.modal-bg { position: absolute; inset: 0; background: rgba(5, 3, 2, .72); animation: sfuma .25s ease; }
-.modal-box { position: relative; width: min(940px, 100%); max-height: 100%; overflow: auto; border-radius: 8px; animation: sali .35s cubic-bezier(.2, .8, .2, 1); -webkit-overflow-scrolling: touch; }
-.modal-box .op { margin: 0; }
-.modal-box .op-head { padding-right: 54px; }
-.modal-x { position: absolute; top: 14px; right: 14px; z-index: 5; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(244, 237, 228, .3); background: rgba(15, 3, 1, .7); color: #f4ede4; font-size: 26px; line-height: 1; display: grid; place-items: center; padding: 0 0 3px; }
-.modal-x:hover { background: #f4ede4; color: #0f0301; }
-.modal-open, .modal-open body { overflow: hidden; }
-@keyframes sfuma { from { opacity: 0; } to { opacity: 1; } }
-@keyframes sali { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .modal-bg, .modal-box { animation: none; } }
-.op-mini.con-img::before { opacity: .22; }
+.acc .apri { display: flex; align-items: center; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #cfa965; }
+.acc .apri i { font-style: normal; font-size: 18px; line-height: 1; display: inline-block; transform: rotate(90deg); transition: transform .35s ease; }
+.acc.open .apri i { transform: rotate(-90deg); }
+.acc-body { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .45s cubic-bezier(.2, .7, .2, 1), visibility 0s .45s; }
+.acc.open .acc-body { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .45s cubic-bezier(.2, .7, .2, 1), visibility 0s; }
+.acc-in { overflow: hidden; min-height: 0; }
+.acc-pad { padding: 0 clamp(20px, 3vw, 32px) 28px; border-top: 1px solid var(--line); }
+.acc-pad .dates { margin-top: 20px; }
+.acc-pad .statement { margin-top: 22px; }
+.acc-pad .facts { margin-top: 26px; }
+@media (prefers-reduced-motion: reduce) { .acc-body, .acc .apri i { transition: none; } }
 .progress { background: var(--brass); }
 </style>
 
@@ -437,7 +434,7 @@ button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px)
   "disclaimer": "Gli importi e i rendimenti mostrati sono previsioni basate sugli accordi in essere tra le parti e non costituiscono garanzia di risultato."
 }
 ;
-  const BLOBS = {"43adbb1938d60b05886a43e5d77d3be764f63aa5a59899d048eefe34ffb7dec4": {"s": "MFaXRjALHcUKVQC+1Sw6AQ==", "i": "LFsEMzrRYAPyd3ya", "c": "7rrfsHtlP40fg5NLvAGcJvy98gzCdh2WGUTv9tsVl/1JAK/mhBOXXWHe82jW9v7PxOo2bFskwBgHDQHH5j2dH+EUU8pRne/10HLk26/2WeFinxQYN3lzqw/f+7cqTpxxDyBRKI9WsjzmrnrZ7W318gS44/fv326quiGIpktCU1jiWcoD+hQLS1tNCM9LPwzrUDVsnBXglA7ro+kJEYJGkLajTB+uRPLve0ZwI6oWYyZDqGlfjJcBCK/sWtvW+PGxpO6GgBczzrYyM0KzaDGE3/9UovkfUj1Pk7Zq057zW4qecRXLF86Ylya0Fg7IZZEtORHa2qLTGBjwQjdjIhAD031Vf5uXrz5pYZRuDaXEl3MdgMW3hKfLw4NfzrMFRzXXccSeKZKymMz3HawYThA7sstOOH3Cc7jxbzs+wHT6aiwDEFRFxGVM5CMxZeazxwoZHCe9Wcv+W5ictD2zEO51fCDRZ6pKNxSdjEjZ5vVWIAx0F7KepXUSll/7pG3XQDvAgYjMoJ76dSaPBJ8lERQ8Rfvzv68YhY39ChyoPDYJHUAI7GG0IF2ZDoPdAJhYP5ErLJMPjK3DAz88x7Mp/j4tLIKfqGZxU8GNG1YuDhvlBlUJnxQdCclejd0w5WjR9yTINsgrQzhNSBmCUrCc3l3lQY3VZHbobUxPlwBd2291NOT5a+1NHeE165QOoty700uLawELGsy3uufMivBS+L9U3y6LEL48Tn7m11lPUSxAUZh2XGebD8jmXJ46ceQ8JFs4XxgNmlF9cs2yYjTmpULuOzmDQnPcK7m56M8q6Yqoe2UYRXExkRxDJ5fuHo7AX+Vf5DEnrJW3QulLgq+3AGVufMQcuCYVcrnt/BiUqnJvRGa/CyAFzDTR"}, "a7315f9fe0f3deb90fa3b34afa66d2a78665e39286adcfcf86a8cf97951b785f": {"s": "aqr/bvzwdcbd60MMZoBziQ==", "i": "JsD3MZnDhk/NBHN3", "c": "JWl7/8cHNHwzjnZSJXpR2CowjydiuC2ysBAqZsoaPOBZcgcC+OV2DrfZ0yz/fE5pCettQ7g9ihb3+Asi2C8Gb7wCPcCd9d4Rgq6kxIfHmu8q2D/s21V5qqckW96rRf5Do3ztmUyAxb4fI1yMgmx5E1HFLl5Djy1LHjh8fcN6Ctx9g8qvONiMdM+BYG43MMTfLZjqsu9z8bgW1FPpWdbSqQ9Zzw8CvWWiSlp719cNgG+UzqSPJmmqOGhI1libVAMsVmzlAhlv8t8hi3TkGEFRu5OvOs4bcw2mLIkUb8DRbtMW7ppV2FkLtJng16x6uudp9DgB9dXfpQTeW7GJZ9lOS1XYN89c47WUQwpBpN/Fj6ADlRKRkQ2R0Z4dTKk5E/3fpNde+Gz/mRl94Sv18bYMBMrh9OM0sU980rJ0CGiJheX3IFUjhwmufHYvy2QZ595kK9S7TRhzqEHfWUSJ1kmzrl5/D9147crThYvjgnMHdYvdfxqkYeeZpWQzBaVGqrZIENVYenIw5LU+yxjhXrN7kXXGhWEbt3gGihQYNj0LSf8It7cDvu99Z65yu2RErqkP2ubxoW5efIpUXckavYDN4PzJ8uQaFNPiEcrmpkREcsRGFb/uk5kXCpd0TW/u5ricneno8HXe287ZZnmJqnV4YIP/KkoOjQvEjUfHa3qkmSRgJMgnyMOrnATRKLSxaGdOAMvFmHJqoVEWTKCcoy+6dxoPQnuN5WhAcMRjZSq6VCPSZkB2Hp4s33D472o2Pp2qKWEVt/AK+Cr7zsV8bLTUODq0yjUuoLCPq4Z1akRCF2wMFBF7cZ5jW5uFgDeQJXVaX72hsgEs64bdWP9a7LdgOBXe+NQIH/7GrV0n9RI2IVa82D597tkD2jtsfV1UjvRj9GX8NQ=="}, "2913b121bd14b07bc0b28b867e00defc0a2eebb809af3a3ec6ec8b2fe5ee3845": {"s": "argb9bqqgChntbLLrnxT+Q==", "i": "lNDgJAJ7jqr/R2Cl", "c": "pK3d+0tg0WeMe4N0uSNLhl5lBJuGI0PRDt26H0qKny/JghPzZFs5gM2J1Jttn49Th5zrKn9VxV7G+/uLXsdNTguwBUGJN9bqCRCI2iaCGVv9qHdYz923IzvpB1YC//5Ht+qh1nEuqpLq+7FgEvpE6WhFG0rRU/IxYOjSJpXcLP/gqwoA54WSo7ohfZXYOnWDJyvXtZtq8EHsV9jTtYPM/EiMkvfEJYaOVDBT2i6vBuxt/U7Mq6ro5lMs8zJHkI2z08rRl++rk6ds8vyIJAJtbD9UGQ8iLdKKtxSZpXRx4/k8jgqem56JTW4M1jCsq5j+ey6bcf+Jqmr8yQJqzfhOjWDSqEwcJJk8alg2JCaCtGMFCPN6GOUmc0hJY1swGZZuFdXVP2RtFGrJ3FJu1WjUuzcz37UAxz5zji7E/x8k1axBWfYmFMezZEbQfqDUPcb2AYnJf6r42rmpr49bY2lY8lZSF90EmqDIvgW0KHPl8GiMulJ3bXcr4oAeix1j/hA8kbZDLGkPfc+hoj5NbUvD6CWORXL4NzW6jLI+k2rTPA6cmSOtg+mOVWM/2UoG3TLx7DBbIqbLko0rmgVgV2eFLrWVtJAs5UwaGRYaTfTchiPi6A4t1wdHOJq4PADla0b+kKA+KtODyHTQHlN4VBuc+qcBSaDrCcFPgXShEoqoZctrN94GALDPK6Y0tDSBhzJ6AYxMnoWzNiuwJTcFxHXaHCeLtvuYYMmuH/Iw5gZNMyM0y3f9w3Z1V2R0hiptogEWWh9+xdr731OMwXmZUlS3UHXHP3p8ACtdnef1do5Ty93pTV1Jxjqdw4kmXUeyErkmYL3INRNQezCM6fu+C+lSlthSxIFpsBqcf9+lsnBZWtKDpq7V6m4TrYnNqO2Zf+avSLPBF3ns75V6ZY3/ws24+9VrWanihGSaDsIjEl4QLAwCpmVyCZK3OX26fPRAEuUBChODrfcwVUAJRj+UwJw14wPjchzvpVYZeGBnDBX1C9vi5K/j9LjiulYeytBrieeMZqDUdidIcgOmYM6TlFrPppulGdqzo29+M3gjAYKQ3zNNVJ8mM1Qw3895TBw44Q0xFe9QVVa9eaOJqKG4g4pMrHjfi2WXMKciWHiIHuj/lerT9S+UGmFtD9OkaTUrB4mLhKHmsaaTu7iUQKPPIF5d"}, "b7203fbac3e27bae85399451c8f5602cc93ff5450438a92d28ad4b8062868535": {"s": "u4YacqG4v4AOa739K4b5vg==", "i": "8h7Rv82JuN0riHQ/", "c": "ZTNvuzzZq9XlMWJ5zpdU3u7ljI7EeylDKjbnlJVvMlDAOIWthod1R/jU3BFWFj3NN5jcHbelOOKFykFfquQ0FAHc5MeuXBvnKloTTGtyjRyIbXrhrlhvoWeLy5Zp7LgYTeJVjEqPOKYECWmyqvQf4ms3uIEsWEtwfxuwICwaAdeWwG1OAXbpeA/Af6DqL06RVacdTAwcpdgtWPE3WAmVmY0wA0O3He0/VVCvn+5UBWiubSZ3ttRGt8VLRkbQltwxw/V9TXmBgu0SFYtS4s7e6zbQhxkhwhomy3s1n+HsmRbRax6YQzPMs060LdMH29bsgZAgK9mzSUDsIaYNgBe584gCJVesMCuzq6dhHHGCh03gbMHrwwvwO9KaZOa5sTUVQETFelWvyvCNO0mVWxhuhCa6RrPmtFVbd+uRIS9ZkMKVhYpxBfVjV6By25TSrj7NCUI8Q8yQpB9PGK4PrUfdMt/reAcUqSnHK06a5Mq04kJNdtI8nAU7OsvfS7wWnw9p3BrlP4zp7YGz/6lOzkrqR8NbdNEHKSCAsj2irfXfFQDBHx+37JE0nqIR2GucaNBxlXM4Xt81a/KoOD1el8EaMbrS"}, "42da1bafe8573a8e964d2d6023d64836b49a889cb86b475432a1e1f8a48b1af1": {"s": "U6dfx5ce2ve2/MAAbPwTSw==", "i": "DTbhBPKN2d0203UY", "c": "eVDfc5PdCyg+81XguVFPJlHi88WyeBGv/ig427ojvU7shQXjqalDOYJE3SjBVnZGnyCnHgWVmVooTanajKLjYLX3lWIigKN251Oo0UzWNglWXK54FPVfpyw4qeIYxHsR5mGbfvOFihRhdhyFUXZf3HuhnI83xHH7TjL4ftp8TOkLTZcbqLzgxWZ7sCXTfySPHQO7fZGVH2I5UO3v3a/pK1esB/urORpHe1KF/Xc74KJe3hwxlFXvFO/G6hxFI1T9cQMg4ewkPj5FvkC9vGMS9pd9XGieC5qiuzihab7zS3iopN4IAvqy3y+yVXdITmrnCZYcV0KjbLjZqTSqjQ2XW5FbtukAiFIEU17XFrEc/tyN3VEkBZ7eTvBLLIM4aU4+RQB84UcBkqHXx9mv5CEOX8Vwt6CdwkU3KqXwVVqx5LqdXj9NSjXjUT5EeDVrn1k66WAxZAd9s0q1hf1Coqc/7GPrpR6N63udlLarSMU9hNe1CA2sfwi9JhXKZARDt4UGxTRmlQJAEwOUhw2iSztK0a2g2AeuUebpwi3HuWpjv9CM+VpSykz/WubBoVFCzrmKggCfq/a2RnKsdZDSW5CBTen7Q7XGiY2Oiy0="}, "653a4db4c983651c5b33d786cb247537c86410b3e13829c1f12ec7584ab1b870": {"s": "2byDLMYaGgVQMFdKZxOmXA==", "i": "KoQItkjw+1hF9kUj", "c": "VelcPRSz8lAO3MmPEmrc45PI0IThwjEHv768RGg7mi4d+hC2zrZo3SkC3DLO+spAs0IbQEHkjb40VXvuDE/VXkNPVOf5hzoD3bNECg+/T742bJbLRX7a5duSEcw1YPgP6BV1SaOSlcwzY5NqxRzSqhygVZka0xlHBkCnvqCgKae+TbqTEyckZbF5L0pwyNNxe1Tj4O1ys1Z7jVOOU5A0Wmxu9Jde84F7Aj4NxAxPW1nlUjRY1DCH9LtDw9iy51n7O9TiNitmvN0ndcjpIxqgL+0Qza7AsCxpiA4D9knGYYlWA8bbgFgDUBo6Jz1l3IFfN1wQi4ePC/d86geQZYVSY6yLgJ4Z4j4emEbHIA8hF9YXs0x0Dz5YfbZ9uifzJbk8ePxwTvjgQO0V677XaUPIIW7A1FiIKdneG6zeBqUMybIsdRjUvkvK/7VF4JhJh+qkP38sJlV1RcexXd9LUreOmFAGA5K8sYnLOQ4LO2mkm1SMMf9ST6/AudBWMtvYMhnTmtiGOo5igSxrxgB3/Fo49DurXfckMqQq/meXHENJdT1udGhAoPSlLzHkBwFvoE7+mjtlvVQjfUtZyRkDLCvw+OnpqOIKsIY="}, "5b6e12020d137599ab4463a24bd3d49be905b0ef9569825bb09dba12d7b1d7b2": {"s": "w6Zcfkv8vL1R9Ww4st5pPw==", "i": "Yja6UepwvwwpNTmG", "c": "+EIP0w8eudUqFrhEwu/Qwt+al7QX6itm1Qkj6fMi86JXBjiFoBd18IVYHIo0R0yWO0QqPhgYnA1w+FFSUzt2jO6YhqJ8oYQ7TAZhdIs9hK/iBuGyi5CdIr9E9WS6z95Q0PVxoXYfjR7IgLky1MQ+etHCK/Yp4AxDQ/huBsYHSsvNzn5L3je+yzolttpIFaTNGFH7LBvhs37R8PpeyHUu4eLM/e7Xq4jJqxlPEiJ2bTB5bwjY0ndg2z8VUfVh7IQfRSzZrFdiikBgj4LATQiOtVXnpxw2p3OGgjgR3DVd3oUV6gsBa6v8OIsaLa3S01lFzKKNFL8soSWQzUugF+qdT+W+NrVw+eSKoZ1DNewD23WwgdeJLKQyXYudd3+J3ffirmWYri38zy6VdoJS0Ss663/x0nic4fNPP1FrQ8p2kf8ugeSC6zy215vKkxktLGwcqOXiSpTZlX3BbJI2mg3HWhqH80XXS+wVxvuXQ0njkClpgob7xeYiqXdL6pNXej4ecA4IoVt+uOTtUfndmWXSWhjIs4oxhi5GmfjDClgHNAn6ShlCWxzkPR6q5i8RU2K7NrPeKgZOXHHn+auRjWAlTl4T7kB+"}};
+  const BLOBS = {"43adbb1938d60b05886a43e5d77d3be764f63aa5a59899d048eefe34ffb7dec4": {"s": "CfA79Ik4+9QsOz43J0DkEw==", "i": "7gz0O0r7Kpz8NULu", "c": "HN7NqwZif6JJLTVQKmTqh7jDSz4bTpfaJb7/Mvch7d26ZSkXWsiX+Bz4uqU8PQXnaQnjZ3MYLcXlj0w0sOr3Tu6T+/ZZvWyW9NfJze7Ky0MAg7ttOHFougLJpAsJiDR91iDm/v3Cm3GNctNLF90JbQU5sHMd2OYTOHiIzgKiEUI9RXhbDJNp5jQ1lC2hh3UUG6YClH37lNo2h0gy9ZZpBvomew3dG5RjWs8PZFfPkIq1GgOPM6lNonG0IjbAzGDoPpoRtLk7AxOCv0a0u1yP2svJva2A7/YYzZWS2NN7gIRT21+cLtxs3E5aqRPyXeanfZkMrJ/2zPET4afifsRKf62W+nKSTTE0R18WT64aK2ns+1SIcWDU4j4sIq47+rYBoQ3GdY0ptQHJB/AMQtDz78HTRPanJ9/Sviu8+OSdTy/A3Ag3Z7m/UPSl3384Z1tBZbg4Lp3+bW2CqpWin1E4GUDMQ2BrqkPt/tcJVV5dar1COCSN7i4S6yEjk/734/FQnvsuGfsBqU8suBgAE/5wdx0x8Vz6c3R6W/cdVJris/SaH7HzOZyeWz+JUlR+LBEAUic1xK80VIRmCOwLVWl+yzEeK4cDbFYH8zVm5UU2T4C7eUwcD6smEt5BF+R0PHiJcP4FJhusLXu/mdVYy+/3zlEESY0ulApWAQ9zo9npf9A9eJU5E7GVgdu+e1tfzdFtU9ssKRVtDzNI7OQ4fwYvpRP3ZbLWkpCzCbFy0AH0g5OEN2SJ4bfx1XsTAja4ubNpyz9pwWD+tnA9d2p1jRWn+137y0JwEh9LcZIOKfgxUZOezalmVCzfos7rUzN+SmF1OtZnTfaQIPb/uZAluhdzaCzltZkPxK9ubZj9X5S4uEctIl69i4Ed"}, "a7315f9fe0f3deb90fa3b34afa66d2a78665e39286adcfcf86a8cf97951b785f": {"s": "9+6uTc2gUA5PdfmGwBRaSA==", "i": "PDQ2F5AauHTUOngP", "c": "6laWqXysbw2ckJUhT0Yr3xyRlipIQCMorpy8SbYRSfQtr4PgsS0TsNGxyEm4GD3K90fAor7Mq0BULzpdlt7W7k5/5jmy01v2PS4ZXRVgL4UgF4WOwTlpG+7A4kpKeE8s8p/ancmsH5mlPjxONlrA0PEnpt5mXe0BEV7COMFTcgbqU3BiZKGbgQ5g8v/yEZwa5hWJb+fF7ChQSQBix3pVMWtvSec5fbATPKoyk3qTMy42p0AIwP1owhZdY4iiYGD7DG06ueUhrObrNa/MdWWlt686OqWEQk+jSZmbe5LeINGjRj8nZzRNX9lgoGyHGqkui7H7Q4hjgSxStG71SM7ZFiYD/vXURshutQVEP6dkBL0jU6mD4w03IZ0/emDNzerYUy3tnYpKoW463XwvMcCokbdSLxHAw3W0oEv4OIThrEuyDXLNS5Y2xRed7lbaGpcVnqu7HS1SvGbshTjCukxHWxsQOwlydSuhXaSRatJKr+GeEJknrYwp9CVQbaeRw5IJhV/vy28P+pG4YKLwpy68ISdn45Vjxs8DKGN3se2ssMQ/x6L0oZhP2APPLdvJ34bJDkBD07xQ7rebDR5JRjg1OUrsW6kt0gEesq8S9t3f1oUjkCCq0j6ADWbXvjApCndhE3o5K74fkO5gDTnF0iFz71L12XBWbJfQCLM00rONI5jiBL3YzWKlxe7MBVJYKILjvlT4hYZhkOWyIVGzpwGxI+LdLdLOnCYhzX0FfSCi9tUKGfDyFtPMoPpengUkFdccw+r57tUcqVDmAxvz9obmMxb/Oe0ZDU7M/xzjrhGeGLL19dUzJGSXgecHrDMDRnLjIJ0SoPyLE4z3QWyIt9kM4xqA/JJFh9woFBv3TIrWs30GMJi95nOEiA17q/sOypcf7IaffA=="}, "2913b121bd14b07bc0b28b867e00defc0a2eebb809af3a3ec6ec8b2fe5ee3845": {"s": "YxcmJMtbJMy5Tbfch/n5VA==", "i": "4JgL/CivE9u1O7Ez", "c": "Q6mVkVgh43T1nRRLlYNay/7lWaeYtB5fK0Fe3hzLn7pHO5IJiw3l6jtZ+GtNtawuGwRniwIDI4GdxTu30l4SJuXWIf8z632SSYvFGNvYAjNZqBOIOMZYKd5Q4QC4XxvDezNLwty2L5pfPlXNEsp6uEixPu0EHJUs0IlSqSkVNlAbte4hzmWubdZ4N+OAAEWs7OuWM4e0RqaAyXU4hz3Yk5pL+xA4t6JLnD7Jby9fiLnAInhPrGeA6KFY8CbDR/FZU8U5r9Cq/NJYIQAWxmCFjzVzkMHpyeokSFaZkDupthFlwEXSDLJ4bUd0xSxn2sUEPw62BgIyz6LHBjn5VJmrWXejwiW7HFjVOoVN4K6LXKxKimVaqX7Sdab9wvy0vdDmhDYi/SKIMRlfMtoAibA3oFQTc4o/6A0m1/b34rkuaiCDLH22r6M5ixOGnjxdUWjoU0MOa2WH4z5DUeHQvoxbcZzaDLUM+L920wW9uKF24K0/Lv/ubLHm3huOEwHbSZ5c2ro0CUqW4hkGCFjhi1MlwMWgnSxyeac9StZFJz1HwA9nBPCKSwHuMWrGEwbggGgVwVfYRdjf5o3GfMLMsjWtc3wY4yRpGbbRn8RwNzVc1fZio7w+Wp65qtlqZUsLc1CE5BSOhuHSTIhA1JWKxSBk8HmVd+NP7iF3EWdxAL8veOlKf9a/FqkaL3VrjIsPKFFMsVlpY36hsqDbkD3vPMED57GGro1dWSC/av/9ZNEscTcXX/fy5FX6+io/w7ZTZOnNXPcYhFlQitvKcUgkKIhd4GY6kZQleD04fvWG2D1N5wxxALWxqpvKD+3aidAbQvbDJt1FFalqRBydZGcZ4u3aa5jbUlcZgcpsENvfMicGFWnfyabEVrXkczb/D+NMniK2ytIsOviGM971gq7FS84miI2fucbGBnW+EsHoFMIdShKhWLEp4lh59QvBo0l5dh+MzDLhlLsN7H5dcfHQ05tK0Yixp6HGkD7fL4Dsv2UwOz+Sf3vnntAklZi0w1mPQJjmsjt9g3M2vNWdAHg2lTbMmd1/DSeLe6Jv9hnWOgMD8n8jEdWoBOrL4xUHlVmccFnfgFTKV01zmmw7DaIgkMnZJy6UwQFhWooIyRO7YrrXH5aZ57U9/Jx9GcfhsSeXLFvei7s7DQLr4caa38D8FvEZ"}, "b7203fbac3e27bae85399451c8f5602cc93ff5450438a92d28ad4b8062868535": {"s": "U2oFRv+txRvXyau5h5tY+Q==", "i": "rQcFo8B5YugexIcE", "c": "dnp+v4xNIZdC4Vr7uCoc7sW9nVtrqm6sKTx+209jhIqacTI0HFAv16zH4Nkxg9UM4J80TxAkpZ0tiL7038oPP567n/CSYsWLwIKLick9QDaKwmT8uSdSJv7yaJ8di+qMfwUvjmKBkeffafrSWgYsH0oUsERpRaIknte1l8nMIsihst8N3X20kqQ85iEY5MXojj/RBrjC0ypesiGsqBwUKG1Jx9Mlq7fDMBxqz4Zs572gAGPZB0shYaiyihvM8JQAI36pVVlya1jhCc74eeYpahVv5zslFAH58m9tM1tKYoBsOJIn6MIHcB0pTjwXCuSSbsL1IZxA/6o0St6AwLmQCC1cxuCm/yLTbrq3bvFTKc+4JZ409H3vIQRkh44rk/PQacYUmub/QRCKGUWJ0x/rp6vSrlxp5IXYYQsiJlAJ4F1du/e+ub2FbVNA4YGOS/dGA8/xYLUFRCKhQoa+j5V2PbqVtafyuVWwwihjdAxBv760NqkGlrNgLtaNn3/Qrlo3NuWExfioB3Cyc0hCs8wKauSsTIQ7KP4Z2pMmVJUP1iT0ATnaTevnVv74XkPRTEA7GWvvqYO6c3mtnl+utGyRtOvE"}, "42da1bafe8573a8e964d2d6023d64836b49a889cb86b475432a1e1f8a48b1af1": {"s": "VfoLtShGAFH13HkiCLxQ3Q==", "i": "BfHgKVXYWnpXi3js", "c": "pNLU2NlddEpPZzm+d/59lRWOV2wgmuWtwfvaKURHhy+XuHW1qIFnKyAbYj/h0fUJUJyUXf5A8F39ctug3Jo6sqd//j+kBC8aeqwSfpgTrglfnaYfDPgiuMRG+hQC0rBAT+nYhmBqz+11kOJh1f/tWNW0mWpjXhFz1HYpLNUwL5eXvsHkvZyydCwB9zMWX0YZntTkXI0GUeNJI6Wzim83YsDV1FILDfipxpTfHnVmyUnxuhWCfA+Fw3VNLUdVIamLoSAWhjZtpX+n+wD/BItmEur/W8cUD/8TgSV91NppSM3uPNFV1Gt09fPW7Kn8uH6fRO7JygvXRoZkbOtaBpz4cAGEXl7ZxBlL6nvHiiRVUKPvSItwoEJRxnpZUY1ey/3V63+kM8Hht111SRPtdXOW3eNj17jQmHAHGinbuJE3ie+iNLnb9+t0Bti0cSWJphvQJxvuixmVBF5WG9M4T33B1hMv3F0FGvrLlufzsPxuoSJBhxlaqyJ/aM/R1lt3I2+qXsMrnw/h5KrK2OjHkYOibgX+utyl4MZwN886adTijpFvFs2n2U6KLqrtzP3rjAD0vFn5t3ELVU7UjU/TM+OjVv5H6eq89/+tVEc="}, "653a4db4c983651c5b33d786cb247537c86410b3e13829c1f12ec7584ab1b870": {"s": "TTMZL/9zRR9ciDJ3idZsvw==", "i": "1Ij0qTva1Yy6rZgq", "c": "EN+i0FAsZJL1ITsOutZOzOfvt3NCZ8rPuSVPK3LsGym4Mrb8aj0tUEum8mDSMNq7Lj4pBrofIRldNeRrlPpwhGCr/zoGmwpuiUzk/szdikcdDBQ/yVvUKPDwaXIipSDHDVroUibmC6q1Jf5t4p5sHlXxCh8U6bvSPwsgXz2Fhcn5spjRbU8Np3WozusaoRfKrzAmlZDNm06Vro8WO4BuPYFgOPl/nvq8HG6oCjF/WCc5pEe5aYjOGBiKM5z2e5x2TO7h/pgAJjW3HoMO7W4+VbV59tA3HxMuuyPL4WFev/0fmwU0x+0MeVHACqJCyaHlGiUIWtKwJejIYUc78ZIum5QttIvWOgAS+D4q7DAYFKBPTj5gI4afw7df8uYs7t2ihPh8sMzyQNu1klrqElBHEVT7CHU+p47srnhch3HD4wnTGeHWfdXF3z9V27Lt3wy7wWVrnskRitH79EfGchzLeW7AWZtti9wO/68n1U6Ir/AMGNyUl14qCP4Lw3qUReKJ8dyK6r5i5WJuBZOkzuH3wgrmyiD48zE6Irvd22hRTX0h8JgNqa5K3GSxCQvaodowfeyweA8QgUdsfEywu/917dRpuIcsVtc="}, "5b6e12020d137599ab4463a24bd3d49be905b0ef9569825bb09dba12d7b1d7b2": {"s": "duHQ/a3FpXiqxsBwQN8p/Q==", "i": "uR/fqZc/Ky5oS+so", "c": "sHkCCJniBPSwvkv9LEAhKvXP203fC/OGxblZgXawtCNM1QW15TmSI4tyMXjEkpdeaSd37/ZC+YTZNMfExwTvJhr+Z9ouEm03o3hR7/rbt3OOOi0k8r309WBArGXDePGZdo1MKXFXOn0R8O3hZQc+IWjs6Ts8RlcPhy1ICejwyZQsYrjUjJOz8YgZ2g23jeLWPtE6pTmguY6w7IDJ2D7qx6nrNvVBhhOQPdPMOYHAZV+ifbtSHIoBIpbNUt1wD2EoT3adLaEtkoruFeiUys5+Low3D9rwMwqX5lkpBzyYWYw2DNR3PZ+l30dHsOjSIvYtXanouZD/LxViI+O0Xo8k2PGWr62ioDLhcJjFSQcDeIp8pWohdtNCGaO9BGBblB3JLzdV6LecU7QMOb+Ha5qk1Ktps1DxJn5j6Un2cj6Doy/mNdzFAdhx4dOO4fWznNtscTnWL8OpQySeAeiyeYxVlv90ymPQwRvh0yv9w2ADxClbbOLYPT36lujCR8vi7x9NcYTGVHTGwxYavGE8sl6Rl54qL18aDPWE60MsHdLurXel3lIERjctJvW4HUkOgGJ3doL8bk5l8KM2WG9rJ7BqHmwd8HyV"}};
   const ITER = 300000;
   const enc = new TextEncoder();
   const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
@@ -525,18 +522,20 @@ button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px)
   const fraseStato = (x) => x.stato === 'conclusa' ? `L'operazione si è conclusa il <b>${dataIt(x.fine)}</b>.`
     : x.stato === 'non_iniziata' ? `L'operazione partirà il <b>${dataIt(x.inizio)}</b>.`
     : `Mancano <b>${giorni(x.giorniMancanti)}</b> alla chiusura, il ${dataIt(x.fine)}.`;
-  const DETTAGLI = {}; // chiave -> HTML della finestra
 
-  // scheda compatta: si apre come finestra quando la tocchi
-  function mini(key, { titolo, desc, x, riga1, riga2, img }) {
+  // scheda a fisarmonica: tocchi e si apre verso il basso, tocchi di nuovo e si chiude
+  function scheda(key, { titolo, desc, x, riga1, riga2, img, dettaglio }) {
     const [txt, cls] = STATO[x.stato];
-    return `<button type="button" class="op op-mini${img ? ' con-img' : ''}" data-apri="${esc(key)}" data-reveal aria-haspopup="dialog">
-      <div class="op-head"><div><h2>${esc(titolo)}</h2><p class="desc">${esc(desc)}</p></div><span class="pill ${cls}"><i></i>${txt}</span></div>
-      <div class="meter-top"><span class="lbl">Avanzamento</span><b>${Math.round(x.progresso * 100)}%</b></div>
-      ${meter(x)}
-      <div class="mini-foot"><span>${riga1}</span><span>${riga2}</span></div>
-      <span class="apri">Apri i dettagli <i aria-hidden="true">›</i></span>
-    </button>`;
+    return `<article class="op acc${img ? ' con-img' : ''}" data-reveal>
+      <button type="button" class="acc-head" aria-expanded="false" aria-controls="acc-${esc(key)}">
+        <div class="op-head"><div><h2>${esc(titolo)}</h2><p class="desc">${esc(desc)}</p></div><span class="pill ${cls}"><i></i>${txt}</span></div>
+        <div class="meter-top"><span class="lbl">Avanzamento</span><b>${Math.round(x.progresso * 100)}%</b></div>
+        ${meter(x)}
+        <div class="mini-foot"><span>${riga1}</span><span>${riga2}</span></div>
+        <span class="apri"><span class="apri-t">Mostra i dettagli</span> <i aria-hidden="true">›</i></span>
+      </button>
+      <div class="acc-body" id="acc-${esc(key)}" role="region" aria-label="Dettagli di ${esc(titolo)}"><div class="acc-in"><div class="acc-pad">${dettaglio}</div></div></div>
+    </article>`;
   }
 
   function renderDash(me) {
@@ -549,13 +548,7 @@ button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px)
       ? `<div class="kpis" data-reveal><div><span class="lbl">Capitale investito</span><b>${eur(t.investito)}</b></div><div><span class="lbl">Guadagno previsto</span><b class="pos">+${eur(t.guadagnoPrevisto)}</b></div><div><span class="lbl">Totale previsto</span><b>${eur(t.totaleAllaFine)}</b></div></div>`
       : '';
 
-    me.operazioni.forEach((op, i) => {
-      const key = 'op' + i;
-      DETTAGLI[key] = `<article class="op${op.immagine ? ' con-img' : ''}">
-        <div class="op-head"><div><h2>${esc(op.titolo)}</h2><p class="desc">${esc(op.descrizione)}</p></div><span class="pill ${STATO[op.stato][1]}"><i></i>${STATO[op.stato][0]}</span></div>
-        <div class="meter-top"><span class="lbl">Avanzamento</span><b>${Math.round(op.progresso * 100)}%</b></div>
-        ${meter(op)}
-        <div class="dates"><span>${dataIt(op.inizio)}</span><span>${dataIt(op.fine)}</span></div>
+    const dettOp = (op) => `<div class="dates"><span>${dataIt(op.inizio)}</span><span>${dataIt(op.fine)}</span></div>
         <p class="statement">Hai investito <b>${eur(op.investito)}</b> il <b>${dataIt(op.inizio)}</b>. ${fraseStato(op)}</p>
         <dl class="facts" style="margin-bottom:0">
           <div><span class="lbl">Capitale investito</span><b>${eur(op.investito)}</b></div>
@@ -563,34 +556,25 @@ button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px)
           <div><span class="lbl">Guadagno previsto</span><b class="pos">+${eur(op.guadagnoPrevisto)}</b></div>
           <div><span class="lbl">Totale a fine operazione</span><b>${eur(op.totaleAllaFine)}</b></div>
         </dl>
-        <p class="note">Il guadagno indicato è quello previsto in base al rendimento concordato e viene riconosciuto alla chiusura dell'operazione.</p>
-      </article>`;
-    });
-    const ops = me.operazioni.map((op, i) => mini('op' + i, { titolo: op.titolo, desc: op.descrizione, x: op, img: op.immagine,
-      riga1: `Investito <b>${eur(op.investito)}</b>`, riga2: `Totale previsto <b>${eur(op.totaleAllaFine)}</b>` })).join('')
+        <p class="note">Il guadagno indicato è quello previsto in base al rendimento concordato e viene riconosciuto alla chiusura dell'operazione.</p>`;
+    const ops = me.operazioni.map((op, i) => scheda('op' + i, { titolo: op.titolo, desc: op.descrizione, x: op, img: op.immagine,
+      riga1: `Investito <b>${eur(op.investito)}</b>`, riga2: `Totale previsto <b>${eur(op.totaleAllaFine)}</b>`, dettaglio: dettOp(op) })).join('')
       || '<div class="empty">Non ci sono operazioni attive al momento.</div>';
 
     // quote sugli investimenti dei clienti presentati: conteggio separato, mai sommato ai guadagni personali
     const rete = me.rete || [];
-    rete.forEach((r, i) => {
-      DETTAGLI['rete' + i] = `<article class="op">
-        <div class="op-head"><div><h2>${esc(r.cliente)}</h2><p class="desc">Quota rete · ${esc(r.titolo)}</p></div><span class="pill ${STATO[r.stato][1]}"><i></i>${STATO[r.stato][0]}</span></div>
-        <div class="meter-top"><span class="lbl">Avanzamento</span><b>${Math.round(r.progresso * 100)}%</b></div>
-        ${meter(r)}
-        <div class="dates"><span>${dataIt(r.inizio)}</span><span>${dataIt(r.fine)}</span></div>
+    const dettRete = (r) => `<div class="dates"><span>${dataIt(r.inizio)}</span><span>${dataIt(r.fine)}</span></div>
         <p class="statement">Il tuo cliente ha investito <b>${eur(r.investitoCliente)}</b>. Ti spetta il <b>${r.quotaPct}%</b>, cioè <b>${eur(r.importo)}</b>. ${fraseStato(r)}</p>
         <dl class="facts" style="margin-bottom:0">
           <div><span class="lbl">Investimento del cliente</span><b>${eur(r.investitoCliente)}</b></div>
           <div><span class="lbl">Quota concordata</span><b>${r.quotaPct}%</b></div>
           <div><span class="lbl">Quota rete prevista</span><b class="pos">+${eur(r.importo)}</b></div>
         </dl>
-        <p class="note">Questa quota è separata dai tuoi guadagni personali e viene riconosciuta alla chiusura dell'operazione.</p>
-      </article>`;
-    });
+        <p class="note">Questa quota è separata dai tuoi guadagni personali e viene riconosciuta alla chiusura dell'operazione.</p>`;
     const reteHtml = rete.length ? `<h2 class="sezione-t rete">Guadagni dalla tua rete</h2><p class="sezione-s">Quote sugli investimenti dei clienti che hai presentato. Sono conteggiate a parte e non si sommano ai tuoi guadagni personali.</p>
       <div class="kpis" data-reveal><div><span class="lbl">Investito dai tuoi clienti</span><b>${eur(me.totaliRete.investitoClienti)}</b></div><div><span class="lbl">Quote rete previste</span><b class="pos">+${eur(me.totaliRete.importo)}</b></div></div>
-      <div class="op-grid">${rete.map((r, i) => mini('rete' + i, { titolo: r.cliente, desc: 'Quota rete · ' + r.titolo, x: r,
-        riga1: `Investito <b>${eur(r.investitoCliente)}</b>`, riga2: `Quota <b>+${eur(r.importo)}</b>` })).join('')}</div>` : '';
+      <div class="op-grid">${rete.map((r, i) => scheda('rete' + i, { titolo: r.cliente, desc: 'Quota rete · ' + r.titolo, x: r,
+        riga1: `Investito <b>${eur(r.investitoCliente)}</b>`, riga2: `Quota <b>+${eur(r.importo)}</b>`, dettaglio: dettRete(r) })).join('')}</div>` : '';
 
     const news = me.novita.length
       ? me.novita.map((n) => `<div class="news"><small>${dataIt(n.data)}</small><div><h3>${esc(n.titolo)}</h3><p>${esc(n.testo)}</p></div></div>`).join('')
@@ -609,7 +593,7 @@ button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px)
         <button role="tab" aria-selected="false" data-tab="news">Novità</button>
         <button role="tab" aria-selected="false" data-tab="ass">Assistenza</button>
       </div>
-      <div id="p-inv" role="tabpanel">${rete.length ? '<h2 class="sezione-t">I tuoi investimenti</h2><p class="sezione-s">Guadagni personali sulle tue operazioni. Tocca una scheda per aprire i dettagli.</p>' : '<p class="sezione-s">Tocca una scheda per aprire i dettagli.</p>'}${kpi}<div class="op-grid">${ops}</div>${reteHtml}</div>
+      <div id="p-inv" role="tabpanel">${rete.length ? '<h2 class="sezione-t">I tuoi investimenti</h2><p class="sezione-s">Guadagni personali sulle tue operazioni. Tocca una scheda per aprire o chiudere i dettagli.</p>' : '<p class="sezione-s">Tocca una scheda per aprire o chiudere i dettagli.</p>'}${kpi}<div class="op-grid">${ops}</div>${reteHtml}</div>
       <div id="p-news" role="tabpanel" hidden>${news}</div>
       <div id="p-ass" role="tabpanel" hidden>${assistenza}</div>`;
     $$('#dashBody .tabs button').forEach((b) => b.addEventListener('click', () => {
@@ -617,37 +601,14 @@ button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px)
       ['inv', 'news', 'ass'].forEach((k) => { $('#p-' + k).hidden = k !== b.dataset.tab; });
       if (b.dataset.tab === 'inv') avviaBarre();
     }));
-    $$('#dashBody [data-apri]').forEach((b) => b.addEventListener('click', () => apriFinestra(b.dataset.apri, b)));
+    $$('#dashBody .acc-head').forEach((b) => b.addEventListener('click', () => {
+      const card = b.closest('.acc');
+      const aperta = card.classList.toggle('open');
+      b.setAttribute('aria-expanded', String(aperta));
+      $('.apri-t', b).textContent = aperta ? 'Nascondi i dettagli' : 'Mostra i dettagli';
+    }));
     osserva($('#dashBody'));
     avviaBarre();
-  }
-
-  /* ---------- finestra dei dettagli ---------- */
-  let modale = null, ultimoFocus = null;
-  function creaModale() {
-    modale = document.createElement('div');
-    modale.className = 'modal'; modale.hidden = true;
-    modale.innerHTML = '<div class="modal-bg" data-chiudi></div><div class="modal-box" role="dialog" aria-modal="true" aria-label="Dettagli"><button type="button" class="modal-x" data-chiudi aria-label="Chiudi">×</button><div class="modal-body"></div></div>';
-    document.body.appendChild(modale);
-    modale.addEventListener('click', (e) => { if (e.target.closest('[data-chiudi]')) chiudiFinestra(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modale && !modale.hidden) chiudiFinestra(); });
-  }
-  function apriFinestra(key, da) {
-    if (!DETTAGLI[key]) return;
-    if (!modale) creaModale();
-    ultimoFocus = da || null;
-    $('.modal-body', modale).innerHTML = DETTAGLI[key];
-    modale.hidden = false;
-    document.documentElement.classList.add('modal-open');
-    $('.modal-box', modale).scrollTop = 0;
-    $('.modal-x', modale).focus();
-    avviaBarre();
-  }
-  function chiudiFinestra() {
-    if (!modale) return;
-    modale.hidden = true;
-    document.documentElement.classList.remove('modal-open');
-    if (ultimoFocus && ultimoFocus.focus) ultimoFocus.focus();
   }
 
   function mostraArea(me) {
@@ -659,7 +620,7 @@ button.op-mini:hover, button.op-mini:focus-visible { transform: translateY(-3px)
     window.scrollTo(0, 0);
   }
   function mostraHome() {
-    chiudiFinestra(); document.body.classList.add('home');
+    document.body.classList.add('home');
     $('#dash').hidden = true; $('#landing').hidden = false;
     $('#clientBar').hidden = true; $('#publicNav').hidden = false;
     $('#dashBody').innerHTML = '';
